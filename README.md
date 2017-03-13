@@ -6,7 +6,9 @@ Allow for a single mutex to have a buffer that allows for more than one lock
 ```go
 package main
 
-import "github.com/Siryu/MutexBuffer"
+import (
+  "github.com/Siryu/MutexBuffer"
+)
 
 func main() {
 // create reference to mutex
