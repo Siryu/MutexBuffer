@@ -1,57 +1,18 @@
-package main
+package mutexBuffer
 
 import (
 	"fmt"
-	"log"
 	"runtime"
 	"sync"
-	"time"
 )
 
-func main() {
-	runtime.GOMAXPROCS(4)
-	mutex := &MutexBuffer{}
-	mutex.SetBuffer(10)
-
-	locksToEnable := 100
-
-	startTime := time.Now()
-	done := make(chan bool, locksToEnable)
-	finished := make(chan bool)
-
-	go func(x int) {
-		for i := 0; i < x; i++ {
-			go func() {
-				mutex.Lock()
-				time.Sleep(1000 * time.Millisecond)
-				log.Printf("routine %v finished sleeping after %v", i, time.Since(startTime))
-				err := mutex.Unlock()
-				done <- true
-				if err != nil {
-					log.Printf("Got an erro: %v", err.Error())
-				}
-			}()
-		}
-	}(locksToEnable)
-
-	go func() {
-		counter := 0
-		for _ = range done {
-			counter++
-			if counter == locksToEnable {
-				finished <- true
-			}
-		}
-	}()
-
-	<-finished
-}
-
+// MutexBuffer create reference and hold to make a buffered mutex
 type MutexBuffer struct {
 	Mutexes  []bool
 	RealLock *sync.Mutex
 }
 
+// SetBuffer takes in an int that determines the amount of locks
 func (m *MutexBuffer) SetBuffer(bufferSize int) {
 	m.RealLock = new(sync.Mutex)
 	m.RealLock.Lock()
@@ -60,6 +21,7 @@ func (m *MutexBuffer) SetBuffer(bufferSize int) {
 	return
 }
 
+// Lock sets a lock on one of the mutexes
 func (m *MutexBuffer) Lock() {
 	found := false
 	for {
@@ -73,7 +35,6 @@ func (m *MutexBuffer) Lock() {
 		}
 		if !found {
 			m.RealLock.Unlock()
-
 			runtime.Gosched()
 		} else {
 			m.RealLock.Unlock()
@@ -83,6 +44,7 @@ func (m *MutexBuffer) Lock() {
 	return
 }
 
+// Unlock unlocks a lock from the mutexes
 func (m *MutexBuffer) Unlock() (err error) {
 	m.RealLock.Lock()
 	found := false
