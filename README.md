@@ -17,8 +17,12 @@ mutex := &mutexBuffer.MutexBuffer{}
 mutex.SetBuffer(3)
 // lock a mutex
 mutex.Lock()
+
+// insert the code here you want to be restricted to
+
 // unlock a mutex
 mutex.Unlock()
+}
 ```
 
 ## License
