@@ -33,11 +33,10 @@ func (m *MutexBuffer) Lock() {
 				break
 			}
 		}
+		m.RealLock.Unlock()
 		if !found {
-			m.RealLock.Unlock()
 			runtime.Gosched()
 		} else {
-			m.RealLock.Unlock()
 			break
 		}
 	}
