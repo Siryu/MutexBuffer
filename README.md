@@ -1,6 +1,7 @@
 # MutexBuffer
 Allow for a single mutex to have a buffer that allows for more than one lock
 
+This allows for a certain number of go routines to access the code at a time
 
 ## How to Use
 ```go
