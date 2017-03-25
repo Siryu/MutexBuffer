@@ -10,8 +10,7 @@ import (
 func TestLock(t *testing.T) {
 	amountOfLocks := 2
 	bufferSize := 10
-	mutex := &MutexBuffer{}
-	mutex.SetBuffer(bufferSize)
+	mutex := New(bufferSize)
 	for i := 0; i < amountOfLocks; i++ {
 		mutex.Lock()
 	}
@@ -26,8 +25,7 @@ func TestUnlock(t *testing.T) {
 	amountOfLocks := 6
 	amountOfUnlocks := 2
 	bufferSize := 10
-	mutex := &MutexBuffer{}
-	mutex.SetBuffer(bufferSize)
+	mutex := New(bufferSize)
 	for i := 0; i < amountOfLocks; i++ {
 		mutex.Lock()
 	}
@@ -45,8 +43,7 @@ func TestLockLocking(t *testing.T) {
 	testListSize := 5
 	bufferSize := 2
 	times := make(chan time.Duration, testListSize)
-	mutex := &MutexBuffer{}
-	mutex.SetBuffer(bufferSize)
+	mutex := New(bufferSize)
 
 	// start go routines that sleep for a time, in order to check times upon completion
 	for i := 0; i < testListSize; i++ {

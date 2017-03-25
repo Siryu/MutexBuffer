@@ -12,6 +12,13 @@ type MutexBuffer struct {
 	RealLock *sync.Mutex
 }
 
+// New creates a new mutexBuffer and returns it
+func New(bufferSize int) (newMutexBuffer *MutexBuffer) {
+	newMutexBuffer = new(MutexBuffer)
+	newMutexBuffer.SetBuffer(bufferSize)
+	return
+}
+
 // SetBuffer takes in an int that determines the amount of locks
 func (m *MutexBuffer) SetBuffer(bufferSize int) {
 	m.RealLock = new(sync.Mutex)

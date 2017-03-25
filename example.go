@@ -9,11 +9,8 @@ import (
 // runs through locks to Enable printing out the times for when each go routine is unlocking
 // watch how it will only allow the amount of routines through that you specified.
 func main() {
-	// create reference to a MutexBuffer
-	mutex := &MutexBuffer{}
-	// set the size of the buffer
-	mutex.SetBuffer(3)
-	// set how many go routines to go through
+	// create reference to a MutexBuffer and set the size of the buffer
+	mutex := New(3)
 	locksToEnable := 100
 
 	startTime := time.Now()

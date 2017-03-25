@@ -13,9 +13,8 @@ import (
 
 func main() {
 // create reference to mutex
-mutex := &mutexBuffer.MutexBuffer{}
 // set the size you want the buffer to be
-mutex.SetBuffer(3)
+mutex := mutexBuffer.New(3)
 // lock a mutex
 mutex.Lock()
 
